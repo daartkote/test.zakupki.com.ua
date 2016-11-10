@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Image;
 use App\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -27,7 +29,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -38,7 +40,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -85,4 +87,27 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function upload(Request $request, $id)
+    {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg',
+            'name' => 'required'
+        ]);
+
+        $imageName = time(). '.' . $request->image->getClientOriginalExtension();
+
+        $list = Product::find($id);
+        $img = new Image();
+        $img->image_name = $request->name;
+        $img->image_path = $imageName;
+
+        $list->images()->save($img);
+
+        $request->image->move(public_path('images'), $imageName);
+
+        return response('', 201);
+
+    }
+
 }
