@@ -17,14 +17,8 @@ Route::get('/', ['uses' => 'UserController@index', 'as' => 'home']);
 
 
 Route::resource('user', 'UserController');
-Route::bind('user', '\\App\\User');
+Route::post('user/{id}/upload', 'UserController@upload');
 
 Route::resource('product', 'ProductController');
-Route::bind('product', '\\App\\Product');
-
-Route::group(['prefix' => '{resource}'], function(){
-    Route::post('{id}/upload', function($resource, $id){
-        \App()->call('\\App\\Http\\Controllers\\'. ucfirst($resource) . 'Controller@upload', ['id'=>$id]);
-    });
-});
+Route::post('product/{id}/upload', 'ProductController@upload');
 

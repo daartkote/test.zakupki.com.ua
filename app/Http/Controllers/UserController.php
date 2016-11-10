@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Image;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -89,21 +88,8 @@ class UserController extends Controller
 
     public function upload(Request $request, $id)
     {
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg',
-            'name' => 'required'
-        ]);
-
-        $imageName = time(). '.' . $request->image->getClientOriginalExtension();
-
-        $list = User::find($id);
-        $img = new Image();
-        $img->image_name = $request->name;
-        $img->image_path = $imageName;
-
-        $list->images()->save($img);
-
-        $request->image->move(public_path('images'), $imageName);
+        $user = User::find($id);
+        \App()->call('\\App\\Http\\Controllers\\ImageDownloadController@upload', ['request'=>$request, 'model'=>$user]);
 
     }
 

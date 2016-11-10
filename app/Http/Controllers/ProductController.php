@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Image;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -90,23 +89,8 @@ class ProductController extends Controller
 
     public function upload(Request $request, $id)
     {
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg',
-            'name' => 'required'
-        ]);
-
-        $imageName = time(). '.' . $request->image->getClientOriginalExtension();
-
-        $list = Product::find($id);
-        $img = new Image();
-        $img->image_name = $request->name;
-        $img->image_path = $imageName;
-
-        $list->images()->save($img);
-
-        $request->image->move(public_path('images'), $imageName);
-
-        return response('', 201);
+        $product = Product::find($id);
+        \App()->call('\\App\\Http\\Controllers\\ImageDownloadController@upload', ['request'=>$request, 'model'=>$product]);
 
     }
 
