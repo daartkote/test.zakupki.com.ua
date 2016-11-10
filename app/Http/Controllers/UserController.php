@@ -85,4 +85,12 @@ class UserController extends Controller
     {
         //
     }
+
+    public function upload(Request $request, $id)
+    {
+        $user = User::find($id);
+        \App()->call('\\App\\Http\\Controllers\\ImageDownloadController@upload', ['request'=>$request, 'model'=>$user]);
+
+    }
+
 }

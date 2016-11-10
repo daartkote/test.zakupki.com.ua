@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,6 +15,10 @@
 
 Route::get('/', ['uses' => 'UserController@index', 'as' => 'home']);
 
+
 Route::resource('user', 'UserController');
+Route::post('user/{id}/upload', 'UserController@upload');
+
 Route::resource('product', 'ProductController');
+Route::post('product/{id}/upload', 'ProductController@upload');
 

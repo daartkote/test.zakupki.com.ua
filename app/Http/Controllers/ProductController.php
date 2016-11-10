@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -27,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -38,7 +39,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -85,4 +86,12 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function upload(Request $request, $id)
+    {
+        $product = Product::find($id);
+        \App()->call('\\App\\Http\\Controllers\\ImageDownloadController@upload', ['request'=>$request, 'model'=>$product]);
+
+    }
+
 }

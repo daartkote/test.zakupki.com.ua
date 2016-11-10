@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Test zakupki</title>
+    <title>@yield('title', 'Test zakupki')</title>
 
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -62,6 +63,44 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var id;
+    $('[data-target="#upload"]').click(function(){
+        id = $(this).data("id");
+
+        $('#upload_modal_form').submit(function (e) {
+            e.preventDefault();
+            var formdata = new FormData($(this)[0]);
+            $.ajax({
+                type: 'POST',
+                url: '{{Request::path()}}/' + id + '/upload',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                cache: false,
+                data: formdata,
+                contentType: false,
+                processData: false,
+
+                success: function (response) {
+                    if (response != 'error') {
+                        //$('#messages').addClass('alert alert-success').text(response);
+                        // OP requested to close the modal
+                        $('#upload').modal('hide');
+                    } else {
+                        $('#messages').addClass('alert alert-danger').text(response);
+                    }
+                }
+            });
+
+        });
+
+
+    });
+
+
+</script>
 </body>
 </html>
