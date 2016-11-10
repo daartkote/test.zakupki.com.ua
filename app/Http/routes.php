@@ -15,4 +15,5 @@ Route::get('/', ['uses' => 'UserController@index', 'as' => 'home']);
 
 Route::resource('user', 'UserController');
 Route::resource('product', 'ProductController');
+Route::resource('image', 'ImageController');
 
